@@ -7,28 +7,45 @@ import { Divider, IconButton, List, MD3Colors, Menu } from 'react-native-paper';
 type TasktaskProps = {
   task: Task;
   deleteTask: (task: Task) => void;
-  complete: (task: Task) => void;
-  unComplete: (task: Task) => void;
+  updateStatus: (task: Task, status: TASK_STATUS) => void;
 };
 
-export default function TaskItem({ task, deleteTask, complete, unComplete }: TasktaskProps) {
+export default function TaskItem({ task, deleteTask, updateStatus }: TasktaskProps) {
   const [visible, setVisible] = React.useState(false);
 
   const openMenu = () => setVisible(true);
 
   const closeMenu = () => setVisible(false);
 
-  const isDue = (dueDate: string, status: TASK_STATUS) => {
-    const now = new Date();
-    const date = new Date(dueDate);
-
-    return now > date && status === TASK_STATUS.PENDING;
+  const getStatusColor = (task: Task) => {
+    if (task.status === TASK_STATUS.ACTIVE) return '#b4f1cb';
+    if (task.status === TASK_STATUS.COMPLETED) return '#6b6e6c';
+    else return '#f0d69b';
   };
 
-  const getStatusColor = (task: Task) => {
-    if (task.status === TASK_STATUS.COMPLETED) return '#b4f1cb';
-    else if (task.dueDate && isDue(task.dueDate, task.status)) return MD3Colors.error90;
-    else return '#f0d69b';
+  const updateTaskStatus = () => {
+    switch (task.status) {
+      case TASK_STATUS.PENDING:
+        updateStatus(task, TASK_STATUS.ACTIVE);
+        break;
+      case TASK_STATUS.ACTIVE:
+        updateStatus(task, TASK_STATUS.COMPLETED);
+        break;
+      case TASK_STATUS.COMPLETED:
+        updateStatus(task, TASK_STATUS.PENDING);
+        break;
+    }
+  };
+
+  const getNextTaskStatus = () => {
+    switch (task.status) {
+      case TASK_STATUS.PENDING:
+        return `Mark as ${TASK_STATUS.ACTIVE}`;
+      case TASK_STATUS.ACTIVE:
+        return `Mark as ${TASK_STATUS.COMPLETED}`;
+      case TASK_STATUS.COMPLETED:
+        return `Mark as ${TASK_STATUS.PENDING}`;
+    }
   };
 
   return (
@@ -43,13 +60,8 @@ export default function TaskItem({ task, deleteTask, complete, unComplete }: Tas
         description={() => (
           <View style={{ gap: 5 }}>
             {task.description ? <Text>{task.description}</Text> : null}
-            {task.dueDate ? (
-              <Text className="text-xs" style={{ fontSize: 12 }}>
-                Due On: {formatDate(task.dueDate, 'dd MMM, yyyy hh:mm a')}
-              </Text>
-            ) : null}
 
-            {task.dueDate ? (
+            {task.status ? (
               <Text className="text-xs" style={{ fontSize: 12 }}>
                 Status: {task.status}
               </Text>
@@ -70,13 +82,7 @@ export default function TaskItem({ task, deleteTask, complete, unComplete }: Tas
             }>
             <Menu.Item onPress={() => deleteTask(task)} leadingIcon={'delete'} title="Delete" />
             <Divider />
-            <Menu.Item
-              onPress={() =>
-                task.status === TASK_STATUS.PENDING ? complete(task) : unComplete(task)
-              }
-              leadingIcon={task.status === TASK_STATUS.PENDING ? 'check' : 'cancel'}
-              title={task.status === TASK_STATUS.PENDING ? 'Complete' : 'Undo'}
-            />
+            <Menu.Item onPress={() => updateTaskStatus()} title={getNextTaskStatus()} />
           </Menu>
         )}
       />

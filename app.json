@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "Aair Task",
-    "slug": "aair-task-app",
+    "name": "Task",
+    "slug": "stacelabs-task-app",
     "version": "1.0.0",
-    "scheme": "aair-task-app",
+    "scheme": "stacelabs-task-app",
     "web": {
       "favicon": "./assets/favicon.png"
     },

@@ -3,11 +3,10 @@ export interface Task {
   title: string;
   description?: string;
   status: TASK_STATUS;
-  createdDate?: string;
-  dueDate?: string;
 }
 
 export enum TASK_STATUS {
+  ACTIVE = 'active',
   COMPLETED = 'completed',
   PENDING = 'pending',
 }

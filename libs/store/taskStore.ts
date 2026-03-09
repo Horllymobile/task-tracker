@@ -7,8 +7,7 @@ type TaskState = {
   tasks: Task[];
   addTask: (task: Task) => void;
   deleteTask: (task: Task) => void;
-  markComplete: (task: Task) => void;
-  markUnComplete: (task: Task) => void;
+  updateStatus: (task: Task, status: TASK_STATUS) => void;
   refetchTask: boolean;
   setRefetch: (status: boolean) => void;
   setTaskData: (data: Omit<TaskState, 'setTaskData'>) => void;
@@ -36,7 +35,6 @@ export const useTaskStore = create(
             refetchTask: status,
           };
         }),
-
       deleteTask: (item) =>
         set((state) => {
           const tasks = [...state.tasks];
@@ -48,30 +46,18 @@ export const useTaskStore = create(
             refetchTask: true,
           };
         }),
-      markComplete: (item) =>
-        set((state) => {
+      updateStatus: (item, status: TASK_STATUS) => {
+        return set((state) => {
           const tasks = [...state.tasks];
           const position = tasks.findIndex((to) => to.id === item.id);
-          const task = tasks[position];
-          task.status = TASK_STATUS.COMPLETED;
+          tasks[position].status = status;
           return {
             ...state,
-            tasks: tasks,
+            tasks: tasks, // ✅ was `Tasks` (capital T)
             refetchTask: true,
           };
-        }),
-      markUnComplete: (item) =>
-        set((state) => {
-          const tasks = [...state.tasks];
-          const position = tasks.findIndex((to) => to.id === item.id);
-          const task = tasks[position];
-          task.status = TASK_STATUS.PENDING;
-          return {
-            ...state,
-            Tasks: tasks,
-            refetchTask: true,
-          };
-        }),
+        });
+      },
       setTaskData: (data) =>
         set((state) => ({
           ...state,
@@ -95,9 +81,3 @@ export const useTaskStore = create(
     }
   )
 );
-
-// export const selectTask = (state: TaskState) => ({
-//   Tasks: state.Tasks,
-//   setTaskData: state.setTaskData,
-//   add: state.add,
-// });

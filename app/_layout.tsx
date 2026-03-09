@@ -8,7 +8,6 @@ export default function RootLayout() {
     <Stack screenOptions={{ headerShown: false }} initialRouteName="home">
       <Stack.Screen name="home" />
       <Stack.Screen name="add-task" />
-      <Stack.Screen name="add-via-voice" />
       {/* <Stack.Screen name="search" /> */}
     </Stack>
   );
