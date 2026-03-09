@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "Task",
-    "slug": "stacelabs-task-app",
+    "name": "Task Tracker",
+    "slug": "task-tracker",
     "version": "1.0.0",
-    "scheme": "stacelabs-task-app",
+    "scheme": "task-tracker",
     "web": {
       "favicon": "./assets/favicon.png"
     },
@@ -27,7 +27,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },

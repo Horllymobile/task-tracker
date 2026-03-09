@@ -1,6 +1,6 @@
-# Task Application
+# Task Tracker
 
-Task Application is a simple task management application that allows users to create, update, and delete tasks.
+Task Tracker is a simple task management application that allows users to create, update, and delete tasks.
 
 ---
 
